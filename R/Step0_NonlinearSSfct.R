@@ -1,9 +1,7 @@
-# fit a 5-parameter log-logistic model
-# with random asymptotes, steepness and inflection point location
-## starting values need to be provided:
-# estimate a set of parameters for each Run
+# define self-starter growth functions
+## starting values need to be provided: estimate a set of parameters for each Run
 
-# Beta avec decroissance (Yin et al 2008) --------------------------------
+# Beta avec decroissance (Yin et al 2008) --------------------------------------
 BetaF <- function (x, ymax, tymax, tinflex) {
   ifelse(x<tymax,
          ymax*(1+((tymax-x)/(tymax-tinflex)))*((x/tymax)^(tymax/(tymax-tinflex))), 
@@ -29,7 +27,7 @@ BFSSdrm <- function() {
 }
 
 
-# Bell-shaped avec plateaux fixes ----------------------
+# Bell-shaped avec plateaux fixes ----------------------------------------------
 # http://www.graphpad.com/guides/prism/7/curve-fitting/index.htm?reg_bellshaped_dose_response.htm
 Bell <- function (x, Dip, tinflex_1, tinflex_2, nH1, nH2) {
   Plateau1=0; Plateau2=0; # plateaus at the left and right ends of the curve
@@ -70,7 +68,7 @@ BellSSdrm <- function() {
 }
 
 
-# Pseudo-Voigt (Archantoulis et Miguez 2015) -----------------------
+# Pseudo-Voigt (Archantoulis et Miguez 2015) -----------------------------------
 PsVo <- function (x, a, b, c, X0) {
   a*(c/(1+((x-X0)/b)^2)+(1-c)*exp(-.5*(((x-X0)/b)^2)))
 }
@@ -94,7 +92,7 @@ PsVoSSdrm <- function() {
 }
 
 
-# Positive Pseudo-Voigt (Archantoulis et Miguez 2015) -------------------------
+# Positive Pseudo-Voigt (Archantoulis et Miguez 2015) --------------------------
 PsV2 <- function (x, a, b, c, X0) {
   ifelse(a*(c/(1+((x-X0)/b)^2)+(1-c)*exp(-.5*(((x-X0)/b)^2)))<0,0,
          a*(c/(1+((x-X0)/b)^2)+(1-c)*exp(-.5*(((x-X0)/b)^2))))
@@ -120,7 +118,7 @@ PsV2SSdrm <- function() {
 }
 
 
-# Holling type IV (Bolker 2008) --------------------
+# Holling type IV (Bolker 2008) ------------------------------------------------
 Hol4 <- function (x, Asym, b, c) { (Asym*x^2)/(b+c*x+x^2) }
 Hol4SSdrm <- function() {                                                             
   Hol4drm <- function (x, parm)                                                         
@@ -138,7 +136,7 @@ Hol4SSdrm <- function() {
   return(list(fct=Hol4drm, ssfct=ssHol4drm, names=namesHol4drm))}
 
 
-# logN (Archantoulis et Miguez 2015) -------------------
+# logN (Archantoulis et Miguez 2015) -------------------------------------------
 LogN <- function (x, a, b, X0) { a*exp(-.5*(log(x/X0)/b)^2) }
 LogNSSdrm <- function() {                                                             
   LogNdrm <- function (x, parm)                                                         
@@ -156,7 +154,7 @@ LogNSSdrm <- function() {
   return(list(fct=LogNdrm, ssfct=ssLogNdrm, names=namesLogNdrm))}
 
 
-# Asymmetric lorentzian (Stancik et al 2008) -------------------------------
+# Asymmetric lorentzian (Stancik et al 2008) -----------------------------------
 AsLo <- function (x, a, b, X0, A) {  
   g=2*b/(1+exp(a*(x-X0)))
   (2*A/(pi*g))/(1+4*((x-X0)/g)^2)
@@ -181,10 +179,8 @@ AsLoSSdrm <- function() {
   return(list(fct=AsLodrm, ssfct=ssAsLodrm, names=namesAsLodrm))}
 
 
-# GomppGrowth 3.1 ---------------------------
-"gompGrowth.1" <-
-  function(fixed = c(NA, NA, NA), names = c("c", "m", "plateau"))
-  {
+# GomppGrowth 3.1 --------------------------------------------------------------
+gompGrowth.1 <- function(fixed = c(NA, NA, NA), names = c("c", "m", "plateau"))  {
     ## Checking arguments
     numParm <- 3
     if (!is.character(names) | !(length(names) == numParm)) {stop("Not correct 'names' argument")}
@@ -232,9 +228,8 @@ AsLoSSdrm <- function() {
   }
 
 
-# GomppGrowth 3.2 ---------------------------
-"gompGrowth.2" <-
-  function(fixed = c(NA, NA, NA), names = c("c", "d", "plateau"))  {
+# GomppGrowth 3.2 --------------------------------------------------------------
+gompGrowth.2<-function(fixed = c(NA, NA, NA), names = c("c", "d", "plateau")) {
     ## Checking arguments
     numParm <- 3
     if (!is.character(names) | !(length(names) == numParm)) {stop("Not correct 'names' argument")}
@@ -278,9 +273,9 @@ AsLoSSdrm <- function() {
     invisible(returnList)
   }
 
-# GomppGrowth 3.3 ---------------------------
-"gompGrowth.3" <-
-  function(fixed = c(NA, NA, NA), names = c("b", "c", "plateau"))  {
+
+# GomppGrowth 3.3 --------------------------------------------------------------
+gompGrowth.3<-function(fixed = c(NA, NA, NA), names = c("b", "c", "plateau")){
     ## Checking arguments
     numParm <- 3
     if (!is.character(names) | !(length(names) == numParm)) {stop("Not correct 'names' argument")}
@@ -324,4 +319,5 @@ AsLoSSdrm <- function() {
     returnList <- list(fct = fct, ssfct = ssfct, names = pnames, text = text, noParm = sum(is.na(fixed))) 
     class(returnList) <- "drcMean"
     invisible(returnList)
-  }
+}
+
