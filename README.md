@@ -1,6 +1,6 @@
-## YamGroP: 
+# YamGroP: 
 
-# 1. Build a pixel classifier to segment the blue frame 
+## 1. Build a pixel classifier to segment the blue frame 
 This R script is designed to classify pixels in images into two categories: "Frame" and "Background," using color data and a Random Forest classifier. The process involves loading necessary libraries, collecting pixel data from images, transforming color data into various color spaces, and training a classifier.
 
 The script begins by loading and installing the required libraries, including tidyverse for data manipulation, imager for image processing, randomForest for building the classification model, and other utilities like tripack, colorscience, and crayon for additional functionalities. The function install_if_necessary ensures that each package is installed and loaded.
@@ -14,7 +14,7 @@ Finally, the script trains a Random Forest classifier using the transformed data
 In summary, the script provides a workflow for manually collecting training data from images, transforming that data into a format suitable for machine learning, and training a classifier to distinguish between different parts of an image based on color information. The output includes the trained model, which can be used to classify pixels in new images based on their color characteristics.
 
 
-# 2. Automated Frame Detection and distorsion correction
+## 2. Automated Frame Detection and distorsion correction
 This R script is an advanced tool for detecting and extracting specific frame regions from a collection of images, utilizing color classification techniques and image processing algorithms. It begins by ensuring that all necessary libraries are available and loaded. The packages include tidyverse for data manipulation, imager for image processing, tripack for triangulation, colorscience for color conversions, parallel for parallel computing, ggplot2 for plotting, and randomForest for machine learning classification. The function install_if_necessary checks if each package is installed and loads it, installing it if necessary.
 
 The next step involves gathering the image files from a specified directory. The script searches the directory "./data/GC_Pics_Example/" for files with a .JPG extension, storing their paths in the image_files list. This list serves as the input dataset for the frame detection process.
@@ -32,7 +32,7 @@ To handle multiple images efficiently, the script employs parallel processing. I
 In summary, this script automates the process of identifying and extracting specific frame regions from images. By leveraging advanced image processing techniques and machine learning, it transforms the color data, classifies pixels, and applies geometric corrections to accurately extract the desired area. The use of parallel processing ensures that the script can handle large numbers of images efficiently, making it a powerful tool for batch processing tasks in image analysis.
 
 
-# 3. Image-Based Classification of Yam and Background Pixels Using Random Forest
+## 3. Image-Based Classification of Yam and Background Pixels Using Random Forest
 
 This R script focuses on classifying pixels in images into two categories: "Yam" and "Other," using a machine learning approach. The process involves loading necessary libraries, collecting color data from selected pixels in images, transforming this data into various color spaces, and training a Random Forest classifier.
 
@@ -47,7 +47,7 @@ Using the prepared dataset, the script trains a Random Forest classifier to dist
 In summary, this script automates the classification of pixels into Yam and Other categories using color data from images. It includes steps for data collection, feature extraction, model training, and saving the trained model. This workflow can be extended to multiple images and other classification tasks with similar data structures.
 
 
-# 4. Parallel Image Segmentation and Analysis for Estimating Yam Cover Percentage
+## 4. Parallel Image Segmentation and Analysis for Estimating Yam Cover Percentage
 
 This R script facilitates the parallel processing of images to classify pixels into "Yam" and "Other" categories, calculating the percentage of yam cover in each image. It begins by loading the necessary libraries, ensuring that all tools for image processing, data manipulation, and machine learning are available. The packages used include tidyverse for data manipulation, imager for image handling, colorscience for color space conversions, randomForest for the classification model, and doParallel for parallel computing.
 
@@ -71,7 +71,7 @@ Summary
 This script automates the analysis of image datasets to estimate the percentage of yam cover, leveraging advanced image processing techniques and parallel computing. It converts raw image data into a format suitable for machine learning, applies a trained classifier, and outputs quantitative results efficiently. The use of parallel processing makes it particularly well-suited for handling large volumes of image data.
 
 
-# 5. Modeling and Analyzing Yam Ground Cover Dynamics
+## 5. Modeling and Analyzing Yam Ground Cover Dynamics
 
 This R script is designed to model and analyze the dynamics of yam ground cover using data on yam coverage over time. The analysis involves several stages, including data preparation, model fitting for different growth stages, and visualization of results. Key steps include loading necessary packages, preparing the data, fitting sigmoid models to growth and senescence phases, and visualizing the dynamics.
 
