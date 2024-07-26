@@ -1,18 +1,23 @@
-# Chargement des librairies ------------------------------------------------
-packs <- c("tidyverse", "imager", "tripack","colorscience", "parallel", 
-           "ggplot2", "randomForest")
-InstIfNec<-function (pack) {
-    if (!do.call(require,as.list(pack))) {
-        do.call(install.packages, as.list(pack))  }
-    do.call(require, as.list(pack)) }
-lapply(packs, InstIfNec)
+# Loading Necessary Libraries ------------------------------------------------
+packages <- c("tidyverse", "imager", "tripack", "colorscience", "parallel", 
+              "ggplot2", "randomForest")
 
-# Chargement des images ------------------------------------------------
-alldataFile <- grep(list.files("./data/GC_Pics_Example/", recursive=TRUE, full.names = T), 
-                    pattern='JPG', value=TRUE) # pic<-alldataFile[12]
+# Function to install and load packages if necessary
+install_if_necessary <- function(pack) {
+    if (!require(pack, character.only = TRUE)) {
+        install.packages(pack)
+        require(pack, character.only = TRUE)
+    }
+}
 
+# Apply the function to all packages
+lapply(packages, install_if_necessary)
 
-# 1 - Define FrameDetection function ------------------------------------------
+# Loading Image Files ---------------------------------------------------------
+image_files <- grep(list.files("./data/GC_Pics_Example/", recursive = TRUE, full.names = TRUE), 
+                    pattern = 'JPG', value = TRUE)
+
+# 1 - Define FrameDetection Function ------------------------------------------
 FrameDetection <- function(pic) {
     tryCatch({
         # Extract the name of the picture from its path
@@ -169,11 +174,11 @@ FrameDetection <- function(pic) {
 }
 
 
-# 2. Execute the function in parallel #### -------------------------------------
+# 2. Execute the Function in Parallel ----------------------------------------
 # Detect the number of available cores and create a cluster
-no_cores <- detectCores() - 5
-cl <- makeCluster(getOption("cl.cores", no_cores))
-clusterEvalQ(cl, {
+num_cores <- detectCores() - 5
+cluster <- makeCluster(getOption("cl.cores", num_cores))
+clusterEvalQ(cluster, {
     library(imager)
     library(tidyverse)
     library(tripack)
@@ -182,5 +187,5 @@ clusterEvalQ(cl, {
 })
 
 # Apply the FrameDetection function in parallel to all image files
-parLapply(cl, alldataFile, FrameDetection)
-stopCluster(cl)
+parLapply(cluster, image_files, FrameDetection)
+stopCluster(cluster)
