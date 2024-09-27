@@ -1,6 +1,6 @@
 # YamGroP: Yam Growth and development phenotyping pipeline
 
-![Pipeline](https://github.com/dcornet/YamSCoP/blob/main/Images/YamSCoP_Pipeline.jpg)  
+![Pipeline](https://github.com/dcornet/YamSCoP/blob/main/docs/YamGroP_Pipeline.png)  
 
 <br>
 
