@@ -1,6 +1,26 @@
 # YamGroP: Yam Growth and development phenotyping pipeline
 
-![Pipeline](https://github.com/dcornet/YamSCoP/blob/main/Images/YamSCoP_Pipeline.jpg)  
+![Pipeline](./docs/PipelineIllustration2.png)  
+
+<br>
+
+## Overview
+YamGroP (Yam Growth and Development Phenotyping Pipeline) is designed to facilitate comprehensive phenotypic analysis of yams, focusing on emergence vigor, growth and senescence through a series of structured scripts. These scripts process raw image data, extract phenotypic information, and perform basic statistical analysis to understand genetic variations. This project focuses on image analysis. For more information on image acquisition and prerequisites report to the following standard operating protocole: 
+<a href="https://github.com/dcornet/YamSCoP/blob/main/Docs/RTBfoods_H.2.2_SOP_Color%20Characterization%20through%20Imaging_RTB%20foods_2019.pdf">
+  <img src="https://github.com/dcornet/YamSCoP/blob/main/Images/YamSCoP_SOP1.jpg" alt="SOP1" width="600" />
+</a>  
+
+<br>
+
+### Projects
+This work was developed as part of two projects funded by the bill and melinda gates foundation and the European Union: 
+* [CavalBio](https://www.cirad.fr/en/worldwide/cirad-worldwide/projects/cavalbio-project): CAVALBIO is working to develop sustainable citrus and yam value chains in Guadeloupe, by focusing on disease tolerance/resistance, adaptation to low-input production systems, product quality, and extending production periods. Genetic improvement operations centre on using the biodiversity of cultivated species and their nearest relatives. To this end, various parents have been crossed. The resulting selected hybrids often have more than two sets of chromosomes (polyploidy), since this generally ensures better tolerance of various types of stress. High-resolution genetic maps and collections of genetic markers have been built for the parents concerned. Using these resources, the recombination of genetic characters within the populations of progenies can be retraced precisely, to select the best genotypes in terms of adaptation and production. The structures and mechanisms responsible for the elaboration of worthwhile characters, on a cell and tissue level, and the effect of polyploidy on those characters are also being studied. Project start date: 01/01/2018 Project end date: 31/12/2020
+* [AfricaYam](https://africayamphase2.com/): This IITA-led aims at increasing yam productivity whilst reducing production costs and environmental impact by developing and deploying end-user preferred varieties with higher yield, greater resistance to pests and diseases and improved quality. This project involves a network of research organizations in the four main producer countries of the yam belt: the National Root Crops Research Institute (NRCRI) and the Ebonyi State University (EBSU) in Nigeria; two research institutes under the Council for Scientific and Industrial Research (CSIR) in Ghana (the Crops Research Institute and the Savanna Agricultural Research Institute; the Centre National de Recherche Agronomique (CNRA), Côte d'Ivoire; and the Université d'Abomey-Calavi (UAC), Dassa Center, Benin.  
+
+<br>
+
+### Running example
+To help you understand and use the analysis pipeline, emergence dates are provided in a data frame [./data/Emergence.csv](./data/Emergence.csv) and a set of ground cover images is provided in the [./data/GC_Pics_Example](./data/GC_Pics_Example) directory. It includes 5 yam genotypes followed every 15 days during the whole cropping season, from emergence up to complete senescence. Ground base images were taken using diffrent sensor (smartphone or camera). All other files provided in the [./out/](./out/) directory can be produced by the pipeline. Having them available allows the user to test the different pipeline modules independently.  
 
 <br>
 
