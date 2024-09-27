@@ -9,7 +9,6 @@ InstIfNec <- function(pack) {
 lapply(packs, InstIfNec)
 
 # Data Preparation ------------------------------------------------------------
-
 # Load data
 PlantingDate <- "220602"
 DOY_Plant <- as.numeric(format(as.Date(PlantingDate, "%y%m%d"), "%j"))
@@ -276,46 +275,50 @@ ggplot(res, aes(x = DayDOY, y = pRec)) +
 dev.off()
 
 # Comprehensive Visualization of all stages ------------------------------------
-png(height = 9, width = 15, res = 300, units = "in", type = "cairo", family = "Garamond",
+ress<-subset(res, Var %in% c("A01", "A109"))
+newdataS<-subset(newdata, Var %in% c("A01", "A109"))
+newdatasS<-subset(newdatas, Var %in% c("A01", "A109"))
+dfs<-subset(df, Var %in% c("A01", "A109"))
+png(height = 5, width = 10, res = 300, units = "in", type = "cairo", family = "Garamond",
     filename = "./out/GroundCoverDynamic_all.png")
-ggplot(res, aes(x = DayDOY, y = pRec)) +
+ggplot(ress, aes(x = DayDOY, y = pRec)) +
   geom_smooth(se = FALSE, color = "#d95f02", linewidth = 1.2) +
-  geom_line(data = newdata, aes(x = DayDOY, y = p), color = "#4daf4a", linewidth = 1.2) +
-  geom_segment(data = df, arrow = arrow(length = unit(0.1, "inches"), ends = "both"), color = "#4daf4a",
+  geom_line(data = newdataS, aes(x = DayDOY, y = p), color = "#4daf4a", linewidth = 1.2) +
+  geom_segment(data = dfs, arrow = arrow(length = unit(0.1, "inches"), ends = "both"), color = "#4daf4a",
                aes(x = growth_ED5, y = growth_d_MaxRec + 5, xend = growth_ED95, yend = growth_d_MaxRec + 5)) +
-  geom_text(data = df, color = "#4daf4a", 
+  geom_text(data = dfs, color = "#4daf4a", 
             aes(x = growth_ED5 + (growth_ED95 - growth_ED5) / 2, y = growth_d_MaxRec + 8, label = "Growth")) +
-  geom_vline(data = df, aes(xintercept = DOY_Plant), color = "#377eb8", linetype = "dashed") + 
-  geom_vline(data = df, aes(xintercept = growth_ED5), color = "#377eb8", linetype = "dashed") + 
-  geom_segment(data = df, arrow = arrow(length = unit(0.1, "inches"), ends = "both"), color = "#377eb8",
+  geom_vline(data = dfs, aes(xintercept = DOY_Plant), color = "#377eb8", linetype = "dashed") + 
+  geom_vline(data = dfs, aes(xintercept = growth_ED5), color = "#377eb8", linetype = "dashed") + 
+  geom_segment(data = dfs, arrow = arrow(length = unit(0.1, "inches"), ends = "both"), color = "#377eb8",
                aes(x = DOY_Plant, y = growth_d_MaxRec + 8, xend = growth_ED5, yend = growth_d_MaxRec + 8)) +
-  geom_text(data = df, color = "#377eb8", 
+  geom_text(data = dfs, color = "#377eb8", 
             aes(x = DOY_Plant + (growth_ED5 - DOY_Plant) / 2, y = growth_d_MaxRec + 11, label = "Latency")) +
-  geom_vline(data = df, aes(xintercept = Plateau_n), color = "#d95f02", linetype = "dashed") + 
-  geom_vline(data = df, aes(xintercept = Plateau_x), color = "#d95f02", linetype = "dashed") + 
-  geom_segment(data = df, arrow = arrow(length = unit(0.1, "inches"), ends = "both"), color = "#d95f02",
+  geom_vline(data = dfs, aes(xintercept = Plateau_n), color = "#d95f02", linetype = "dashed") + 
+  geom_vline(data = dfs, aes(xintercept = Plateau_x), color = "#d95f02", linetype = "dashed") + 
+  geom_segment(data = dfs, arrow = arrow(length = unit(0.1, "inches"), ends = "both"), color = "#d95f02",
                aes(x = Plateau_n, y = growth_d_MaxRec + 8, xend = Plateau_x, yend = growth_d_MaxRec + 8)) +
-  geom_text(data = df, color = "#d95f02", 
+  geom_text(data = dfs, color = "#d95f02", 
             aes(x = Plateau_n + (Plateau_x - Plateau_n) / 2, y = growth_d_MaxRec + 11, label = "Plateau")) +
-  geom_line(data = newdatas, aes(x = DayDOY, y = p), color = "#984ea3", linewidth = 1.2) +
-  geom_vline(data = df, aes(xintercept = Senescence95), color = "#984ea3", linetype = "dashed") + 
-  geom_vline(data = df, aes(xintercept = Senescence5), color = "#984ea3", linetype = "dashed") + 
-  geom_segment(data = df, arrow = arrow(length = unit(0.1, "inches"), ends = "both"), color = "#984ea3",
+  geom_line(data = newdatasS, aes(x = DayDOY, y = p), color = "#984ea3", linewidth = 1.2) +
+  geom_vline(data = dfs, aes(xintercept = Senescence95), color = "#984ea3", linetype = "dashed") + 
+  geom_vline(data = dfs, aes(xintercept = Senescence5), color = "#984ea3", linetype = "dashed") + 
+  geom_segment(data = dfs, arrow = arrow(length = unit(0.1, "inches"), ends = "both"), color = "#984ea3",
                aes(x = Senescence95, y = growth_d_MaxRec + 5, xend = Senescence5, yend = growth_d_MaxRec + 5)) +
-  geom_text(data = df, color = "#984ea3", 
+  geom_text(data = dfs, color = "#984ea3", 
             aes(x = Senescence95 + (Senescence5 - Senescence95) / 2, y = growth_d_MaxRec + 8, label = "Senescence")) +
-  geom_segment(data = df, arrow = arrow(length = unit(0.1, "inches"), ends = "both"), color = "#a65628",
+  geom_segment(data = dfs, arrow = arrow(length = unit(0.1, "inches"), ends = "both"), color = "#a65628",
                aes(x = growth_ED5, y = growth_d_MaxRec + 15, xend = Senescence5, yend = growth_d_MaxRec + 15)) +
-  geom_text(data = df, color = "#a65628", 
+  geom_text(data = dfs, color = "#a65628", 
             aes(x = growth_ED5 + (Senescence5 - growth_ED5) / 2, y = growth_d_MaxRec + 18, label = "Crop cycle")) +
   facet_wrap(Var ~ .) +
   xlab("Day of the year") + ylab("Yam ground cover (%)") +
   geom_point(size = 3, alpha = .8) +
-  geom_text(data = df, label = c("Growth \n(Log-normal)", rep("", 4)), x = 100, y = 7,
+  geom_text(data = dfs, label = c("Growth \n(Log-normal)", ""), x = 100, y = 7,
             hjust = 0, nudge_x = -0.2, color = "#4daf4a") +
-  geom_text(data = df, label = c("Plateau \n(Loess)", rep("", 4)), x = 373, y = 25,
+  geom_text(data = dfs, label = c("Plateau \n(Loess)", ""), x = 373, y = 25,
             hjust = 0, color = "#d95f02") +
-  geom_text(data = df, label = c("Senescence \n(Log-normal)", rep("", 4)), x = 450, y = 8,
+  geom_text(data = dfs, label = c("Senescence \n(Log-normal)", ""), x = 450, y = 8,
             hjust = 1, color = "#984ea3") +
   theme_bw(base_size = 15) +
   theme(legend.position = "none") +
