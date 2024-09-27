@@ -1,4 +1,8 @@
-# YamGroP: 
+# YamGroP: Yam Growth and development phenotyping pipeline
+
+![Pipeline](https://github.com/dcornet/YamSCoP/blob/main/Images/YamSCoP_Pipeline.jpg)  
+
+<br>
 
 ## 1. Build a pixel classifier to segment the blue frame 
 This R script is designed to classify pixels in images into two categories: "Frame" and "Background," using color data and a Random Forest classifier. The process involves loading necessary libraries, collecting pixel data from images, transforming color data into various color spaces, and training a classifier.
@@ -94,3 +98,87 @@ The script visualizes the entire ground cover dynamics, highlighting different g
 Finally, the script compiles all the extracted parameters into a dataset and saves it as a CSV file. This dataset includes critical traits such as Latency, Growth, Plateau, and Senescence periods, providing valuable insights into the dynamics of yam ground cover across different variables.
 
 In summary, this script offers a robust framework for analyzing yam ground cover dynamics using advanced modeling techniques and comprehensive data visualization. It allows for the extraction of key growth parameters and supports decision-making in agricultural research and practice.
+
+
+## R Libraries Overview
+
+This repository uses various R packages for data analysis, image processing, color science, and machine learning. Below is a classification of these libraries, along with links to their official documentation.
+
+---
+
+### Data Manipulation and Visualization
+
+1. **tidyverse**  
+   A collection of R packages designed for data science, including `ggplot2`, `dplyr`, `tidyr`, and more.  
+   [Documentation](https://www.tidyverse.org/)
+
+2. **ggplot2**  
+   A part of the tidyverse, `ggplot2` is a popular system for creating data visualizations using the grammar of graphics.  
+   [Documentation](https://ggplot2.tidyverse.org/)
+
+3. **scales**  
+   Provides graphical scales to map data to aesthetics in visualization.  
+   [Documentation](https://scales.r-lib.org/)
+
+---
+
+### Image Processing
+
+1. **imager**  
+   An image processing library for loading, processing, and analyzing image files in R.  
+   [Documentation](https://dahtah.github.io/imager/)
+
+---
+
+### Color Science
+
+1. **colorscience**  
+   Tools for performing calculations and transformations within the realm of color science.  
+   [Documentation](https://cran.r-project.org/web/packages/colorscience/colorscience.pdf)
+
+---
+
+### Machine Learning
+
+1. **randomForest**  
+   Implements Breiman's random forest algorithm for classification and regression.  
+   [Documentation](https://cran.r-project.org/web/packages/randomForest/randomForest.pdf)
+
+2. **drc**  
+   Analyzes dose-response curves using non-linear regression models.  
+   [Documentation](https://cran.r-project.org/web/packages/drc/drc.pdf)
+
+---
+
+### Parallel Computing
+
+1. **parallel**  
+   A base R package that provides support for parallel computation, enabling the use of multiple processor cores.  
+   [Documentation](https://stat.ethz.ch/R-manual/R-devel/library/parallel/doc/parallel.pdf)
+
+2. **doParallel**  
+   Provides a parallel backend for the `foreach` package, allowing easy parallel computing.  
+   [Documentation](https://cran.r-project.org/web/packages/doParallel/doParallel.pdf)
+
+---
+
+### Miscellaneous
+
+1. **crayon**  
+   Allows the use of colored text and styles in R terminal outputs.  
+   [Documentation](https://cran.r-project.org/web/packages/crayon/crayon.pdf)
+
+2. **tripack**  
+   Provides functions for creating Delaunay triangulations and Voronoi diagrams.  
+   [Documentation](https://cran.r-project.org/web/packages/tripack/tripack.pdf)
+
+---
+
+## Installation
+
+To install these packages, you can run the following code in R:
+
+```r
+packages <- c("tidyverse", "imager", "colorscience", "randomForest", "doParallel", "drc", "scales", "tripack", "crayon")
+install.packages(packages)
+
