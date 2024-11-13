@@ -27,6 +27,7 @@ To help you understand and use the analysis pipeline, emergence dates are provid
 
 ## 1. Build a pixel classifier to segment the blue frame 
 This R script is designed to classify pixels in images into two categories: "Frame" and "Background," using color data and a Random Forest classifier. The process involves loading necessary libraries, collecting pixel data from images, transforming color data into various color spaces, and training a classifier.
+<img src="./docs/PerspectiveCorrection.gif" width="25%">
 
 The script begins by loading and installing the required libraries, including tidyverse for data manipulation, imager for image processing, randomForest for building the classification model, and other utilities like tripack, colorscience, and crayon for additional functionalities. The function install_if_necessary ensures that each package is installed and loaded.
 
