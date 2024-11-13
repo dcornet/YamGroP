@@ -4,7 +4,7 @@
 
 # --------------------------- 1. Load Required Libraries ---------------------------
 # Define a vector of necessary packages
-packages <- c("tidyverse", "imager", "colorscience", "crayon", "randomForest")
+packages <- c("tidyverse", "imager", "colorscience", "crayon", "randomForest", "pROC")
 
 # Function to install and load packages if they are not already installed
 install_if_necessary <- function(pack) {
@@ -131,16 +131,56 @@ model <- randomForest(
   nodesize = 7                      # Minimum size of terminal nodes
 )
 
+
+# ------------------- 7. Visualize trained model ----------------------------------------
 # Print a summary of the trained Random Forest model
 print(model)
 
 # Plot the error rate of the Random Forest model as trees are added
-plot(model)
+png(height=6,  width=10, res=300, filename= "./out/FrameClassifier_OOBbyTreeNb.png",
+    units = "in",  type = "cairo",  family = "Garamond")
+plot(model, main = "Error Rate by Number of Trees")
+legend("topright", legend = c("Overall OOB Error", "Class 1 Error", "Class 2 Error"), 
+       col = c("black", "red", "green"), lty = 1, cex = 0.8)
+dev.off()
 
 # Display the importance of each variable in the model
 importance(model)
 
-# ------------------- 7. Save the Trained Model -----------------------------------------
+png(height=10,  width=8, res=300, filename= "./out/FrameClassifier_VariableImportance.png",
+    units = "in",  type = "cairo",  family = "Garamond")
+varImpPlot(model, main="Variable importance")
+dev.off()
+
+# Display confusion matrix
+print(model$confusion)
+conf_matrix <- as.data.frame(as.table(model$confusion))
+colnames(conf_matrix) <- c("Actual", "Predicted", "Frequency")
+total_correct <- sum(diag(model$confusion))
+total_predictions <- sum(model$confusion)
+accuracy <- total_correct / total_predictions
+
+png(height=6,  width=8, res=300, filename= "./out/FrameClassifier_ConfusionMatrix.png",
+    units = "in",  type = "cairo",  family = "Garamond")
+ggplot(data = conf_matrix, aes(x = Predicted, y = Actual, fill = Frequency)) +
+  geom_tile(color="grey50") +
+  scale_fill_gradient(low = "white", high = "blue") +
+  labs(title = "Confusion Matrix Heatmap", x = "Predicted Class", y = "Actual Class",
+       subtitle = paste("Accuracy:", round(accuracy * 100, 2), "%")) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+dev.off()
+
+
+# Display ROC curve (binary classification)
+png(height=6,  width=6, res=300, filename= "./out/FrameClassifier_ROC.png",
+    units = "in",  type = "cairo",  family = "Garamond")
+roc_curve <- roc(response = model$y, predictor = model$votes[,2])
+plot(roc_curve, main = "ROC Curve")
+dev.off()
+
+
+# ------------------- 8. Save the Trained Model -----------------------------------------
 # Save the trained Random Forest model as an RDS file for future use
 saveRDS(model, "./out/FramePixelClassifier.rds")
 
