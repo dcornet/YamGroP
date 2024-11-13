@@ -42,50 +42,27 @@ res$DayDOY <- ifelse(res$DayDOY < 100, res$DayDOY + 365, res$DayDOY)
 res$code <- paste(res$Var, res$Rep, sep = "_")
 
 # Extract growth phase of the ground cover dynamics
-res %>%
+res0 <- res %>%
   group_by(Var) %>%
-  mutate(max_pRec_date = DayDOY[which.max(pRec)],
-         max_pRec = max(pRec)) %>%
+  mutate(max_pRec_date = DayDOY[which.max(pRec)], max_pRec = max(pRec)) %>%
   filter(DayDOY <= max_pRec_date) %>%
-  ungroup() -> res0
-res0 %>%
-  as_tibble() %>%
-  group_by(Var) %>%
-  group_modify(~ add_row(.x, .before = 0)) -> res0
-res0 <- mutate(group_by(res0, Var),
-               DayDOY = ifelse(is.na(DayDOY), mean(max_pRec_date, na.rm = TRUE) + 5, DayDOY),
-               pRec = ifelse(is.na(pRec), mean(max_pRec, na.rm = TRUE), pRec))
-res0 %>%
-  as_tibble() %>%
-  group_by(Var) %>%
-  group_modify(~ add_row(.x, .before = 0)) -> res0
-res0 <- mutate(group_by(res0, Var),
-               DayDOY = ifelse(is.na(DayDOY), mean(max_pRec_date, na.rm = TRUE) + 10, DayDOY),
-               pRec = ifelse(is.na(pRec), mean(max_pRec, na.rm = TRUE), pRec))
-res0 %>%
-  as_tibble() %>%
-  group_by(Var) %>%
-  group_modify(~ add_row(.x, .before = 0)) -> res0
-res0 <- mutate(group_by(res0, Var),
-               DayDOY = ifelse(is.na(DayDOY), mean(max_pRec_date, na.rm = TRUE) + 50, DayDOY),
-               pRec = ifelse(is.na(pRec), mean(max_pRec, na.rm = TRUE), pRec))
-
+  group_modify(~ {
+    df <- .x
+    new_rows <- tibble(Var = unique(df$Var),
+      DayDOY = c(mean(df$max_pRec_date, na.rm = TRUE) + 5,
+                 mean(df$max_pRec_date, na.rm = TRUE) + 10,
+                 mean(df$max_pRec_date, na.rm = TRUE) + 50),
+      pRec = rep(mean(df$max_pRec, na.rm=T), 3), max_pRec_date=NA, max_pRec=NA)
+    bind_rows(new_rows, df)
+    }) %>% ungroup()
 
 # Fit sigmoid models -----------------------------------------------------------
-# Get upper limit based on maximum observed ground cover
-var_levels <- unique(res$Var)
-up_limits <- summarize(group_by(res, Var), GCx=max(pRec))$GCx
-upll <- c()
-for (i in 1:length(var_levels)) {
-  upll <- c(upll, Inf, up_limits[i], 300)
-}
-
 # Fit various sigmoid models
-sig_LL3 <- drm(pRec ~ DayDOY, curveid = Var, data = res0, fct = LL.3(), upperl = upll)
-sig_L3 <- drm(pRec ~ DayDOY, curveid = Var, data = res0, fct = L.3(), upperl = upll)
-sig_E3 <- drm(pRec ~ DayDOY, curveid = Var, data = res0, fct = G.3u(), upperl = upll)
-sig_G3 <- drm(pRec ~ DayDOY, curveid = Var, data = res0, fct = G.3(), upperl = upll)
-sig_W13 <- drm(pRec ~ DayDOY, curveid = Var, data = res0, fct = W1.3(), upperl = upll)
+sig_LL3 <- drm(pRec ~ DayDOY, curveid = Var, data = res0, fct = LL.3())
+sig_L3 <- drm(pRec ~ DayDOY, curveid = Var, data = res0, fct = L.3())
+sig_E3 <- drm(pRec ~ DayDOY, curveid = Var, data = res0, fct = G.3u())
+sig_G3 <- drm(pRec ~ DayDOY, curveid = Var, data = res0, fct = G.3())
+sig_W13 <- drm(pRec ~ DayDOY, curveid = Var, data = res0, fct = W1.3())
 sig_W23 <- drm(pRec ~ DayDOY, curveid = Var, data = res0, fct = W2.3())
 sig_LN3 <- drm(pRec ~ DayDOY, curveid = Var, data = res0, fct = LN.3())
 
@@ -193,40 +170,22 @@ dev.off()
 
 # Senescence -------------------------------------------------------------------
 # Extract senescence phase of the observations
-res %>%
+res1 <- res %>%
   group_by(Var) %>%
-  mutate(max_pRec_date = DayDOY[which.max(pRec)],
-         max_pRec = max(pRec)) %>%
+  mutate(max_pRec_date = DayDOY[which.max(pRec)], max_pRec = max(pRec)) %>%
   filter(DayDOY >= max_pRec_date) %>%
-  ungroup() -> res1
-res1 %>%
-  as_tibble() %>%
-  group_by(Var) %>%
-  group_modify(~ add_row(.x, .before = 0)) -> res1
-res1 <- mutate(group_by(res1, Var),
-               DayDOY = ifelse(is.na(DayDOY), 420, DayDOY), 
-               pRec = ifelse(is.na(pRec), 0, pRec))
-res1 %>%
-  as_tibble() %>%
-  group_by(Var) %>%
-  group_modify(~ add_row(.x, .before = 0)) -> res1
-res1 <- mutate(group_by(res1, Var),
-               DayDOY = ifelse(is.na(DayDOY), mean(max_pRec_date, na.rm = TRUE) - 5, DayDOY),
-               pRec = ifelse(is.na(pRec), mean(max_pRec, na.rm = TRUE), pRec))
-res1 %>%
-  as_tibble() %>%
-  group_by(Var) %>%
-  group_modify(~ add_row(.x, .before = 0)) -> res1
-res1 <- mutate(group_by(res1, Var),
-               DayDOY = ifelse(is.na(DayDOY), mean(max_pRec_date, na.rm = TRUE) - 10, DayDOY),
-               pRec = ifelse(is.na(pRec), mean(max_pRec, na.rm = TRUE), pRec))
-res1 %>%
-  as_tibble() %>%
-  group_by(Var) %>%
-  group_modify(~ add_row(.x, .before = 0)) -> res1
-res1 <- mutate(group_by(res1, Var),
-               DayDOY = ifelse(is.na(DayDOY), mean(max_pRec_date, na.rm = TRUE) - 50, DayDOY),
-               pRec = ifelse(is.na(pRec), mean(max_pRec, na.rm = TRUE), pRec))
+  group_modify(~ {
+    df <- .x
+    new_rows <- tibble(
+      Var = unique(df$Var),
+      DayDOY = c(420, mean(df$max_pRec_date, na.rm = TRUE) - 5,
+                 mean(df$max_pRec_date, na.rm = TRUE) - 10,
+                 mean(df$max_pRec_date, na.rm = TRUE) - 50),
+      pRec = c(0, rep(mean(df$max_pRec, na.rm = TRUE), 3)),
+      max_pRec_date = NA, max_pRec = NA)
+    bind_rows(new_rows, df)
+  }) %>%
+  ungroup()
 
 # Fit various models for senescence
 sig_sLL3 <- drm(pRec ~ DayDOY, curveid = Var, data = res1, fct = LL.3())
