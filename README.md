@@ -39,7 +39,10 @@ Finally, the script trains a Random Forest classifier using the transformed data
 <img src="./out/FrameClassifier_OOBbyTreeNb.png" width="75%">  
 
 The model overall performance can be visualize as a confusion matrix o by looking at the Receiver Operating Characteristic (ROC) curve:  
-<img src="./out/FrameClassifier_ConfusionMatrix.png" width="55%">  <img src="./out/FrameClassifier_ROC.png" width="45%">  
+<img src="./out/FrameClassifier_ConfusionMatrix.png" width="56%">  <img src="./out/FrameClassifier_ROC.png" width="43%">  
+
+The relative importance of each variable used in the classification model can be analyzed using the mean decrease accuracy or the Gini index. As we can see below, unsupprisingly, the most important variable to detect the frame is the blue value of the RGB color space:  
+<img src="./out/FrameClassifier_VariableImportance.png" width="60%">  
 
 In summary, the script provides a workflow for manually collecting training data from images, transforming that data into a format suitable for machine learning, and training a classifier to distinguish between different parts of an image based on color information. The output includes the trained model, which can be used to classify pixels in new images based on their color characteristics.  
 
