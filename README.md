@@ -30,17 +30,24 @@ This R script is designed to classify pixels in images into two categories: "Fra
 
 The script begins by loading and installing the required libraries, including tidyverse for data manipulation, imager for image processing, randomForest for building the classification model, and other utilities like tripack, colorscience, and crayon for additional functionalities. The function install_if_necessary ensures that each package is installed and loaded.
 
-Next, the script focuses on data collection for classification. The user is prompted to select an image file, which is then resized to 600x400 pixels for consistency. The user manually selects pixels corresponding to the "Frame" and "Background" categories using the locator() function. These selections are crucial as they form the basis for the training dataset. For each selected pixel, the RGB color values and their coordinates are recorded, along with the class label (either "Frame" or "Background").
+Next, the script focuses on data collection for classification. The user is prompted to select an image file, which is then resized to 600x400 pixels for consistency. The user manually selects pixels corresponding to the "Frame" and "Background" categories using the locator() function. These selections are crucial as they form the basis for the training dataset. For each selected pixel, the RGB color values and their coordinates are recorded, along with the class label (either "Frame" or "Background").  
+<img src="./docs/openPic.png" width="75%">  
 
 The collected data is then transformed to include additional color space representations. Specifically, RGB values are converted into HSV, XYZ, and Lab color spaces, providing a richer set of features for the classification model. The script also calculates derived color features, such as the ratio of red to green (r.g) and a metric combining green, red, and blue values (g2rb). These transformations result in a comprehensive dataset with multiple color-related features.
 
 Finally, the script trains a Random Forest classifier using the transformed data. The classifier is tuned with specific parameters, including the number of trees (ntree = 450) and the number of variables considered at each split (mtry = 5). The trained model's importance plot is displayed to show which features contribute most to the classification. The model is then saved to a file named "FramePixelClassifier.rds" for future use.
+<img src="./out/FrameClassifier_OOBbyTreeNb.png" width="75%">  
 
-In summary, the script provides a workflow for manually collecting training data from images, transforming that data into a format suitable for machine learning, and training a classifier to distinguish between different parts of an image based on color information. The output includes the trained model, which can be used to classify pixels in new images based on their color characteristics.
+The model overall performance can be visualize as a confusion matrix o by looking at the Receiver Operating Characteristic (ROC) curve:  
+<img src="./out/FrameClassifier_ConfusionMatrix.png" width="40%"><img src="./out/FrameClassifier_ROC.png" width="40%">  
 
+In summary, the script provides a workflow for manually collecting training data from images, transforming that data into a format suitable for machine learning, and training a classifier to distinguish between different parts of an image based on color information. The output includes the trained model, which can be used to classify pixels in new images based on their color characteristics.  
 
 ## 2. Automated Frame Detection and distorsion correction
-This R script is an advanced tool for detecting and extracting specific frame regions from a collection of images, utilizing color classification techniques and image processing algorithms. It begins by ensuring that all necessary libraries are available and loaded. The packages include tidyverse for data manipulation, imager for image processing, tripack for triangulation, colorscience for color conversions, parallel for parallel computing, ggplot2 for plotting, and randomForest for machine learning classification. The function install_if_necessary checks if each package is installed and loads it, installing it if necessary.
+This R script is an advanced tool for detecting and extracting specific frame regions from a collection of images, utilizing color classification techniques and image processing algorithms.  
+<img src="./docs/PerspectiveCorrection.gif" width="75%">  
+
+It begins by ensuring that all necessary libraries are available and loaded. The packages include tidyverse for data manipulation, imager for image processing, tripack for triangulation, colorscience for color conversions, parallel for parallel computing, ggplot2 for plotting, and randomForest for machine learning classification. The function install_if_necessary checks if each package is installed and loads it, installing it if necessary.
 
 The next step involves gathering the image files from a specified directory. The script searches the directory "./data/GC_Pics_Example/" for files with a .JPG extension, storing their paths in the image_files list. This list serves as the input dataset for the frame detection process.
 
@@ -54,8 +61,8 @@ Following detection, the script performs a perspective transformation to correct
 
 To handle multiple images efficiently, the script employs parallel processing. It detects the number of available CPU cores and sets up a computing cluster. The FrameDetection function is executed in parallel across the images listed in image_files using the parLapply function, which distributes the workload among the processors. This parallel execution significantly reduces processing time, making the script suitable for large-scale image datasets.
 
-In summary, this script automates the process of identifying and extracting specific frame regions from images. By leveraging advanced image processing techniques and machine learning, it transforms the color data, classifies pixels, and applies geometric corrections to accurately extract the desired area. The use of parallel processing ensures that the script can handle large numbers of images efficiently, making it a powerful tool for batch processing tasks in image analysis.
-
+In summary, this script automates the process of identifying and extracting specific frame regions from images. By leveraging advanced image processing techniques and machine learning, it transforms the color data, classifies pixels, and applies geometric corrections to accurately extract the desired area. The use of parallel processing ensures that the script can handle large numbers of images efficiently, making it a powerful tool for batch processing tasks in image analysis.  
+<img src="./docs/PerspectiveDistorsionCorrection.png" width="100%">
 
 ## 3. Image-Based Classification of Yam and Background Pixels Using Random Forest
 
