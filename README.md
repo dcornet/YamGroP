@@ -39,7 +39,7 @@ Finally, the script trains a Random Forest classifier using the transformed data
 <img src="./out/FrameClassifier_OOBbyTreeNb.png" width="75%">  
 
 The model overall performance can be visualize as a confusion matrix o by looking at the Receiver Operating Characteristic (ROC) curve:  
-<img src="./out/FrameClassifier_ConfusionMatrix.png" width="40%"><img src="./out/FrameClassifier_ROC.png" width="40%">  
+<img src="./out/FrameClassifier_ConfusionMatrix.png" width="55%">  <img src="./out/FrameClassifier_ROC.png" width="45%">  
 
 In summary, the script provides a workflow for manually collecting training data from images, transforming that data into a format suitable for machine learning, and training a classifier to distinguish between different parts of an image based on color information. The output includes the trained model, which can be used to classify pixels in new images based on their color characteristics.  
 
