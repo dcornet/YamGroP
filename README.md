@@ -4,6 +4,27 @@
 
 <br>
 
+# Table of Contents
+
+1. [Overview](#overview)
+   - [Projects](#projects)
+   - [Running Example](#running-example)
+2. [Build a Pixel Classifier to Segment the Blue Frame](#1-build-a-pixel-classifier-to-segment-the-blue-frame)
+3. [Automated Frame Detection and Distortion Correction](#2-automated-frame-detection-and-distortion-correction)
+4. [Image-Based Classification of Yam and Background Pixels Using Random Forest](#3-image-based-classification-of-yam-and-background-pixels-using-random-forest)
+5. [Parallel Image Segmentation and Analysis for Estimating Yam Cover Percentage](#4-parallel-image-segmentation-and-analysis-for-estimating-yam-cover-percentage)
+6. [Modeling and Analyzing Yam Ground Cover Dynamics](#5-modeling-and-analyzing-yam-ground-cover-dynamics)
+7. [R Libraries Overview](#r-libraries-overview)
+   - [Data Manipulation and Visualization](#data-manipulation-and-visualization)
+   - [Image Processing](#image-processing)
+   - [Color Science](#color-science)
+   - [Machine Learning](#machine-learning)
+   - [Parallel Computing](#parallel-computing)
+   - [Miscellaneous](#miscellaneous)
+8. [Installation](#installation)  
+
+<br>
+
 ## Overview
 YamGroP (Yam Growth and Development Phenotyping Pipeline) is designed to facilitate comprehensive phenotypic analysis of yams, focusing on emergence vigor, growth and senescence through a series of structured scripts. These scripts process raw image data, extract phenotypic information, and perform basic statistical analysis to understand genetic variations. This project focuses on image analysis. For more information on image acquisition and prerequisites report to the following standard operating protocole: 
 <a href="https://github.com/dcornet/YamSCoP/blob/main/Docs/TODO.pdf">
@@ -46,6 +67,8 @@ The relative importance of each variable used in the classification model can be
 
 In summary, the script provides a workflow for manually collecting training data from images, transforming that data into a format suitable for machine learning, and training a classifier to distinguish between different parts of an image based on color information. The output includes the trained model, which can be used to classify pixels in new images based on their color characteristics.  
 
+<br>
+
 ## 2. Automated Frame Detection and distorsion correction
 This R script is an advanced tool for detecting and extracting specific frame regions from a collection of images, utilizing color classification techniques and image processing algorithms.  
 <img src="./docs/PerspectiveCorrection.gif" width="75%">  
@@ -65,7 +88,9 @@ Following detection, the script performs a perspective transformation to correct
 To handle multiple images efficiently, the script employs parallel processing. It detects the number of available CPU cores and sets up a computing cluster. The FrameDetection function is executed in parallel across the images listed in image_files using the parLapply function, which distributes the workload among the processors. This parallel execution significantly reduces processing time, making the script suitable for large-scale image datasets.
 
 In summary, this script automates the process of identifying and extracting specific frame regions from images. By leveraging advanced image processing techniques and machine learning, it transforms the color data, classifies pixels, and applies geometric corrections to accurately extract the desired area. The use of parallel processing ensures that the script can handle large numbers of images efficiently, making it a powerful tool for batch processing tasks in image analysis.  
-<img src="./docs/PerspectiveDistorsionCorrection.png" width="100%">
+<img src="./docs/PerspectiveDistorsionCorrection.png" width="100%">  
+
+<br>
 
 ## 3. Image-Based Classification of Yam and Background Pixels Using Random Forest
 
@@ -87,9 +112,9 @@ The model overall performance can be visualize as a confusion matrix o by lookin
 The relative importance of each variable used in the classification model can be analyzed using the mean decrease accuracy or the Gini index. As we can see below, unsupprisingly, the most important variable to detect the frame is the a* (green to red) value of the CIE Lab color space:  
 <img src="./out/YamClassifier_VariableImportance.png" width="60%">  
 
+In summary, this script automates the classification of pixels into Yam and Other categories using color data from images. It includes steps for data collection, feature extraction, model training, and saving the trained model. This workflow can be extended to multiple images and other classification tasks with similar data structures.  
 
-In summary, this script automates the classification of pixels into Yam and Other categories using color data from images. It includes steps for data collection, feature extraction, model training, and saving the trained model. This workflow can be extended to multiple images and other classification tasks with similar data structures.
-
+<br>
 
 ## 4. Parallel Image Segmentation and Analysis for Estimating Yam Cover Percentage
 
@@ -114,8 +139,9 @@ For each image, the following steps are performed:
 After processing all images, the parallel cluster is stopped to release computational resources. The results, including the percentage of yam cover and metadata extracted from the image filenames, are compiled into a data frame (results_df). This data frame is then saved as a CSV file ("Yam_Cover_Percentage.csv"), providing a structured output that includes details such as the variable, replicate, and date extracted from the filenames, along with the calculated yam cover percentage.
 Summary
 
-This script automates the analysis of image datasets to estimate the percentage of yam cover, leveraging advanced image processing techniques and parallel computing. It converts raw image data into a format suitable for machine learning, applies a trained classifier, and outputs quantitative results efficiently. The use of parallel processing makes it particularly well-suited for handling large volumes of image data.
+This script automates the analysis of image datasets to estimate the percentage of yam cover, leveraging advanced image processing techniques and parallel computing. It converts raw image data into a format suitable for machine learning, applies a trained classifier, and outputs quantitative results efficiently. The use of parallel processing makes it particularly well-suited for handling large volumes of image data.  
 
+<br>
 
 ## 5. Modeling and Analyzing Yam Ground Cover Dynamics
 
@@ -147,7 +173,9 @@ The script visualizes the entire ground cover dynamics, highlighting different g
 
 Finally, the script compiles all the extracted parameters into a dataset and saves it as a CSV file. This dataset includes critical traits such as Latency, Growth, Plateau, and Senescence periods, providing valuable insights into the dynamics of yam ground cover across different variables.
 
-In summary, this script offers a robust framework for analyzing yam ground cover dynamics using advanced modeling techniques and comprehensive data visualization. It allows for the extraction of key growth parameters and supports decision-making in agricultural research and practice.
+In summary, this script offers a robust framework for analyzing yam ground cover dynamics using advanced modeling techniques and comprehensive data visualization. It allows for the extraction of key growth parameters and supports decision-making in agricultural research and practice.  
+
+<br>
 
 
 ## R Libraries Overview
@@ -222,7 +250,9 @@ This repository uses various R packages for data analysis, image processing, col
    Provides functions for creating Delaunay triangulations and Voronoi diagrams.  
    [Documentation](https://cran.r-project.org/web/packages/tripack/tripack.pdf)
 
----
+---  
+
+<br>
 
 ## Installation
 
