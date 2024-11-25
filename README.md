@@ -95,7 +95,11 @@ In summary, this script automates the classification of pixels into Yam and Othe
 
 This R script facilitates the parallel processing of images to classify pixels into "Yam" and "Other" categories, calculating the percentage of yam cover in each image. It begins by loading the necessary libraries, ensuring that all tools for image processing, data manipulation, and machine learning are available. The packages used include tidyverse for data manipulation, imager for image handling, colorscience for color space conversions, randomForest for the classification model, and doParallel for parallel computing.
 
-The script loads a pre-trained Random Forest model (yam_classifier) from a file ("YamPixelClassifier.rds"). This model has been trained to distinguish between pixels that are part of the yam cover and those that are not, using various color features.
+The script loads a pre-trained Random Forest model (yam_classifier) from a file ("YamPixelClassifier.rds"). This model has been trained to distinguish between pixels that are part of the yam cover and those that are not, using various color features.  
+
+<img src="./out/SegmentedPics/Combined_74F_RP1_220725.png" width="60%"> 
+<img src="./out/SegmentedPics/Combined_A109_RP1_220725.png" width="60%">
+<img src="./out/SegmentedPics/Combined_A53_RP1 _220826.png" width="60%">  
 
 The script identifies all .png image files in the specified directory ("./out/CroppedFrame/") for processing. To handle potentially large datasets efficiently, it registers a parallel backend with 10 cores using the doParallel and foreach packages. This setup allows the script to process multiple images simultaneously, significantly reducing the overall computation time.
 
@@ -103,7 +107,9 @@ For each image, the following steps are performed:
 * Image Loading and Data Conversion: The script loads the image and converts it into a data frame containing RGB values and pixel coordinates.
 * Color Space Transformation and Feature Extraction: The RGB values are transformed into other color spaces (HSV, XYZ, Lab), and additional color features are calculated, such as the red-green ratio (r.g) and the difference between green and the sum of red and blue values (g2rb). These transformations provide a richer set of features for classification.
 * Classification: The pre-trained Random Forest model predicts the class of each pixel, categorizing them as either "Yam" (Y) or "Other" (O). The script then calculates the percentage of pixels classified as "Yam," providing a quantitative measure of yam cover in the image.
-* Results Compilation: The percentage of yam cover and the image filename are stored for each processed image.
+* Results Compilation: The percentage of yam cover and the image filename are stored for each processed image.  
+
+<img src="./docs/GC.gif" width="100%"> 
 
 After processing all images, the parallel cluster is stopped to release computational resources. The results, including the percentage of yam cover and metadata extracted from the image filenames, are compiled into a data frame (results_df). This data frame is then saved as a CSV file ("Yam_Cover_Percentage.csv"), providing a structured output that includes details such as the variable, replicate, and date extracted from the filenames, along with the calculated yam cover percentage.
 Summary
