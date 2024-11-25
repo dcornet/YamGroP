@@ -77,7 +77,16 @@ The script collects data from one image, as indicated by the num_images variable
 
 The script standardizes the data by converting the collected RGB values into other color spaces, such as HSV, XYZ, and Lab. This conversion provides a more comprehensive feature set, aiding in more accurate classification. Additional features are calculated, such as the red-green ratio (r.g) and the difference between green and the sum of red and blue values (g2rb). These features help differentiate the classes based on color properties. The dataset is prepared for modeling, with the class labels converted to a factor data type.
 
-Using the prepared dataset, the script trains a Random Forest classifier to distinguish between "Yam" and "Other" pixels. The model is configured with specific parameters, including the number of trees (ntree = 300), the number of variables tried at each split (mtry = 5), and the minimum size of terminal nodes (nodesize = 3). The trained model is evaluated for its performance, and feature importance is assessed. The final model is saved as "YamPixelClassifier.rds" for future use.
+Using the prepared dataset, the script trains a Random Forest classifier to distinguish between "Yam" and "Other" pixels. The model is configured with specific parameters, including the number of trees (ntree = 300), the number of variables tried at each split (mtry = 5), and the minimum size of terminal nodes (nodesize = 3). The trained model is evaluated for its performance, and feature importance is assessed. The final model is saved as "YamPixelClassifier.rds" for future use.  
+
+<img src="./out/YamClassifier_OOBbyTreeNb.png" width="75%">  
+
+The model overall performance can be visualize as a confusion matrix o by looking at the Receiver Operating Characteristic (ROC) curve:  
+<img src="./out/YamClassifier_ConfusionMatrix.png" width="56%">  <img src="./out/YamClassifier_ROC.png" width="43%">  
+
+The relative importance of each variable used in the classification model can be analyzed using the mean decrease accuracy or the Gini index. As we can see below, unsupprisingly, the most important variable to detect the frame is the a* (green to red) value of the CIE Lab color space:  
+<img src="./out/YamClassifier_VariableImportance.png" width="60%">  
+
 
 In summary, this script automates the classification of pixels into Yam and Other categories using color data from images. It includes steps for data collection, feature extraction, model training, and saving the trained model. This workflow can be extended to multiple images and other classification tasks with similar data structures.
 
@@ -91,14 +100,10 @@ The script loads a pre-trained Random Forest model (yam_classifier) from a file 
 The script identifies all .png image files in the specified directory ("./out/CroppedFrame/") for processing. To handle potentially large datasets efficiently, it registers a parallel backend with 10 cores using the doParallel and foreach packages. This setup allows the script to process multiple images simultaneously, significantly reducing the overall computation time.
 
 For each image, the following steps are performed:
-
-    - Image Loading and Data Conversion: The script loads the image and converts it into a data frame containing RGB values and pixel coordinates.
-
-    - Color Space Transformation and Feature Extraction: The RGB values are transformed into other color spaces (HSV, XYZ, Lab), and additional color features are calculated, such as the red-green ratio (r.g) and the difference between green and the sum of red and blue values (g2rb). These transformations provide a richer set of features for classification.
-
-    - Classification: The pre-trained Random Forest model predicts the class of each pixel, categorizing them as either "Yam" (Y) or "Other" (O). The script then calculates the percentage of pixels classified as "Yam," providing a quantitative measure of yam cover in the image.
-
-    - Results Compilation: The percentage of yam cover and the image filename are stored for each processed image.
+* Image Loading and Data Conversion: The script loads the image and converts it into a data frame containing RGB values and pixel coordinates.
+* Color Space Transformation and Feature Extraction: The RGB values are transformed into other color spaces (HSV, XYZ, Lab), and additional color features are calculated, such as the red-green ratio (r.g) and the difference between green and the sum of red and blue values (g2rb). These transformations provide a richer set of features for classification.
+* Classification: The pre-trained Random Forest model predicts the class of each pixel, categorizing them as either "Yam" (Y) or "Other" (O). The script then calculates the percentage of pixels classified as "Yam," providing a quantitative measure of yam cover in the image.
+* Results Compilation: The percentage of yam cover and the image filename are stored for each processed image.
 
 After processing all images, the parallel cluster is stopped to release computational resources. The results, including the percentage of yam cover and metadata extracted from the image filenames, are compiled into a data frame (results_df). This data frame is then saved as a CSV file ("Yam_Cover_Percentage.csv"), providing a structured output that includes details such as the variable, replicate, and date extracted from the filenames, along with the calculated yam cover percentage.
 Summary
