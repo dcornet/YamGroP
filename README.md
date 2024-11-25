@@ -129,13 +129,21 @@ The script then visualizes the raw data using ggplot2, plotting the yam ground c
 
 To model the growth phase, the script fits several sigmoid models using the drm function from the drc package, including Log-logistic (LL.3), Logistic (L.3), Gompertz (G.3u, G.3), Weibull (W1.3, W2.3), and Log-normal (LN.3) models. These models are evaluated based on AIC and BIC criteria to determine the best fit for the data.
 
+<img src="./out/GroundCoverDynamic_growth.png" width="100%"> 
+
 The script extracts key parameters from the best-fitting model, such as the slope, maximum ground cover, and time to 50% cover. These parameters are used to calculate important growth traits like Latency (time to onset of significant growth) and Growth duration.
 
 The script includes a custom function to detect plateaus in the growth curve, identifying stable phases near the peak of ground cover. This detection helps to delineate the end of active growth and the beginning of a stable phase.
 
+<img src="./out/GroundCoverDynamic_plateau.png" width="100%"> 
+
 For the senescence phase, the script again fits various sigmoid models to describe the decline in ground cover. The chosen model provides parameters that characterize the senescence process, including the rate of decline and the timing of significant decrease in coverage.
 
+<img src="./out/GroundCoverDynamic_senescence.png" width="100%"> 
+
 The script visualizes the entire ground cover dynamics, highlighting different growth stages such as growth, plateau, and senescence, with corresponding model fits. It saves these visualizations as PNG files, offering a comprehensive view of the yam cover changes over time.
+
+<img src="./out/GroundCoverDynamic_all.png" width="100%"> 
 
 Finally, the script compiles all the extracted parameters into a dataset and saves it as a CSV file. This dataset includes critical traits such as Latency, Growth, Plateau, and Senescence periods, providing valuable insights into the dynamics of yam ground cover across different variables.
 
