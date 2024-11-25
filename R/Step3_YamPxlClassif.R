@@ -63,7 +63,57 @@ data_matrix$class <- as.factor(data_matrix$class)
 # Use cross-validation to find the optimal values for ntree and mtry to decrease training time while maintaining accuracy
 yam_pixel_classifier <- randomForest(class ~ ., data = data_matrix, importance = TRUE, proximity = TRUE, 
                                mtry = 5, ntree = 300, nodesize = 3)
+
+
+# ------------------- Visualize trained model ----------------------------------------
+# Print a summary of the trained Random Forest model
 print(yam_pixel_classifier)
-plot(yam_pixel_classifier)
+
+# Plot the error rate of the Random Forest model as trees are added
+png(height=6,  width=10, res=300, filename= "./out/YamClassifier_OOBbyTreeNb.png",
+    units = "in",  type = "cairo",  family = "Garamond")
+plot(yam_pixel_classifier, main = "Error Rate by Number of Trees")
+legend("topright", legend = c("Overall OOB Error", "Class 1 Error", "Class 2 Error"), 
+       col = c("black", "red", "green"), lty = 1, cex = 0.8)
+dev.off()
+
+# Display the importance of each variable in the model
 importance(yam_pixel_classifier)
+
+png(height=10,  width=8, res=300, filename= "./out/YamClassifier_VariableImportance.png",
+    units = "in",  type = "cairo",  family = "Garamond")
+varImpPlot(yam_pixel_classifier, main="Variable importance")
+dev.off()
+
+# Display confusion matrix
+print(yam_pixel_classifier$confusion)
+conf_matrix <- as.data.frame(as.table(yam_pixel_classifier$confusion))
+colnames(conf_matrix) <- c("Actual", "Predicted", "Frequency")
+total_correct <- sum(diag(yam_pixel_classifier$confusion))
+total_predictions <- sum(yam_pixel_classifier$confusion)
+accuracy <- total_correct / total_predictions
+
+png(height=6,  width=8, res=300, filename= "./out/YamClassifier_ConfusionMatrix.png",
+    units = "in",  type = "cairo",  family = "Garamond")
+ggplot(data = conf_matrix, aes(x = Predicted, y = Actual, fill = Frequency)) +
+  geom_tile(color="grey50") +
+  scale_fill_gradient(low = "white", high = "blue") +
+  labs(title = "Confusion Matrix Heatmap", x = "Predicted Class", y = "Actual Class",
+       subtitle = paste("Accuracy:", round(accuracy * 100, 2), "%")) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+dev.off()
+
+
+# Display ROC curve (binary classification)
+png(height=6,  width=6, res=300, filename= "./out/YamClassifier_ROC.png",
+    units = "in",  type = "cairo",  family = "Garamond")
+roc_curve <- roc(response = yam_pixel_classifier$y, predictor = yam_pixel_classifier$votes[,2])
+plot(roc_curve, main = "ROC Curve")
+dev.off()
+
+
+
+
+
 saveRDS(yam_pixel_classifier, "./out/YamPixelClassifier.rds")
