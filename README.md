@@ -69,7 +69,7 @@ In summary, the script provides a workflow for manually collecting training data
 
 <br>
 
-## 2. Automated Frame Detection and Distorsion Correction
+## 2. Automated Frame Detection and Distorsion Correction  
 This R script is an advanced tool for detecting and extracting specific frame regions from a collection of images, utilizing color classification techniques and image processing algorithms.  
 <img src="./docs/PerspectiveCorrection.gif" width="75%">  
 
